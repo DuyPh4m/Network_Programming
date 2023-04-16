@@ -58,17 +58,20 @@ int main(int argc, char *argv[]) {
         // receive()
         char *logFile = argv[2];
         FILE *fp = fopen(logFile, "a");
-        time_t now;
-        char *current_time;
+        char date[80];
+        time_t rawtime;
+        struct tm *timeinfo;
+        time(&rawtime);
+        timeinfo = localtime(&rawtime);
+        strftime(date, sizeof(date), "%Y-%m-%d %H:%M:%S", timeinfo);
 
-        // fprintf(fp,"%s\n", inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
+        // char *current_time;
+
+        fprintf(fp,"%s %s ", inet_ntoa(clientAddr.sin_addr), date);
 
         while(1) {
             int len_n;
-            ret = recv(client, &len_n, sizeof(len_n), 0);
-            time(&now);
-            
-            strftime(curr_time, sizeof(curr_time), "%Y-%m-%d %H:%M:%S", localtime(&));
+            ret = recv(client, &len_n, sizeof(len_n), 0); //recv header
             if(ret == -1) {
                 perror("recv() failed!");
                 break;
@@ -80,7 +83,7 @@ int main(int argc, char *argv[]) {
             int len = ntohl(len_n);
 
             char *buf = malloc(len + 1);
-            ret = recv(client, buf, len, 0);
+            ret = recv(client, buf, len, 0); //recv payload
             if(ret == -1) {
                 perror("recv() failed!");
                 free(buf);
@@ -93,10 +96,11 @@ int main(int argc, char *argv[]) {
 
             buf[len] = '\0';
         
-            fprintf(fp, "%s %s %s", inet_ntoa(clientAddr.sin_addr), date,buf);
+            fprintf(fp, "%s ", buf);
             printf("%d bytes received and saved!\n", len);
             free(buf);
         }
+        fprintf(fp, "\n");
         close(client);
         fclose(fp);
     }
