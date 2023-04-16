@@ -42,6 +42,8 @@ int main(int argc, char *argv[]) {
 
     printf("%s\n", buf);
 
+    // char *pkg = NULL;
+    // size_t pkgsize = 0;
     // send()
     while(1) {
         printf("Enter message: ");
@@ -49,11 +51,13 @@ int main(int argc, char *argv[]) {
         buf[strcspn(buf, "\n")] = '\0'; //replace "\n" in buf by "\0"
         int msg_len = strlen(buf);
         int len_n = htonl(msg_len);
+
         send(client, &len_n, sizeof(len_n), 0); //send msg_len first ~ header
         send(client, buf, msg_len, 0);
-
+        
         if(strncmp(buf, "exit", 4) == 0)
             break;
+        // free(pkg);
     }
     close(client);
 }

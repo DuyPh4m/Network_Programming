@@ -50,7 +50,6 @@ int main(int argc, char *argv[]) {
         printf("Enter messages: ");
         fgets(buf, sizeof(buf), stdin);
         buf[strcspn(buf, "\n")] = '\0';
-        int len = strlen(buf);
 
         send(client, buf, strlen(buf), 0);
 
