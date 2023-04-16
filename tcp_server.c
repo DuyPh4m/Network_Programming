@@ -39,7 +39,6 @@ int main(int argc, char *argv[]) {
     //accept
     struct sockaddr_in clientAddr;
     int clientAddrLen = sizeof(clientAddr);
-    int i = 1;
 
     while(1) {  
         int client = accept(listener, (struct sockaddr*)&clientAddr, &clientAddrLen);
@@ -68,15 +67,15 @@ int main(int argc, char *argv[]) {
         char *logFile = argv[3];
         FILE *fp2 = fopen(logFile, "a");
         
-        fprintf(fp2, "Messages from Client %d:\n", i);
+        fprintf(fp2, "Messages from Client %s:\n", inet_ntoa(clientAddr.sin_addr));
         
         while(1) {
             ret = recv(client, buf, sizeof(buf), 0);
             if(ret == -1) {
                 perror("recv() failed!");
                 break;
-            } else if(ret == 0) {
-                printf("connection with client %d closed!\n", i);
+            } else if(strncmp(buf, "exit", 4) == 0) {
+                printf("Client %s disconnected!\n", inet_ntoa(clientAddr.sin_addr));
                 break;
             }
             // char *storeFile = argv[3];
@@ -84,12 +83,11 @@ int main(int argc, char *argv[]) {
             if(ret < sizeof(buf))
                 buf[ret] = '\0';
             
-            fprintf(fp2, "%s", buf);
+            fprintf(fp2, "%s\n", buf);
             printf("%d bytes received and saved!\n", ret);
             // fclose(fp2);
             
         }
-        i++;
         close(client);
         fclose(fp2);
     }

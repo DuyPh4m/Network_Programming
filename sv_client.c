@@ -28,7 +28,7 @@ int main(int argc, char *argv[]) {
         perror("connect() failed!");
         return 1;
     }
-    printf("Connect to server successfully!\n");
+    // printf("Connect to server successfully!\n");
 
     char buf[256];
     // receive()

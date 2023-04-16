@@ -76,7 +76,7 @@ int main(int argc, char *argv[]) {
                 perror("recv() failed!");
                 break;
             }else if(ret == 0) {
-                printf("Connection closed!\n");
+                printf("Client %s disconnected!\n", inet_ntoa(clientAddr.sin_addr));
                 break;
             }
 
@@ -88,8 +88,8 @@ int main(int argc, char *argv[]) {
                 perror("recv() failed!");
                 free(buf);
                 break;
-            }else if(ret == 0) {
-                printf("Connection closed!\n");
+            }else if(strncmp(buf, "exit", 4) == 0) {
+                printf("Client %s disconnected!\n", inet_ntoa(clientAddr.sin_addr));
                 free(buf);
                 break;
             }

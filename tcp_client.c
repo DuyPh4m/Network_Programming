@@ -43,12 +43,13 @@ int main(int argc, char *argv[]) {
 
     if(ret < sizeof(buf))
         buf[ret] = '\0';
-    printf("%d bytes received: %s\n", ret, buf);
+    printf("%s\n", buf);
 
     //send
     while(1) {
         printf("Enter messages: ");
         fgets(buf, sizeof(buf), stdin);
+        buf[strcspn(buf, "\n")] = '\0';
         int len = strlen(buf);
 
         send(client, buf, strlen(buf), 0);
