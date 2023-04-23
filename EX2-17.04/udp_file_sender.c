@@ -35,9 +35,8 @@ int main(int argc, char *argv[])
     addr.sin_port = htons(portNumber);
 
     char buf[256];
-    strcat(buf, fileName);
 
-    size_t ret = sendto(sender, buf, strlen(buf), 0,(struct sockaddr *) &addr, sizeof(addr));
+    size_t ret = sendto(sender, fileName, sizeof(fileName), 0,(struct sockaddr *)&addr, sizeof(addr));
 
     while(!feof(fp)) {
         size_t msg = fread (buf, 1, sizeof(buf), fp);
@@ -45,6 +44,6 @@ int main(int argc, char *argv[])
             break;
         ret = sendto(sender, buf, msg, 0, (struct sockaddr *) &addr, sizeof(addr));
     }
-    ret = sendto(sender, endFile, sizeof(endFile), 0, (struct sockaddr *) &addr, sizeof(addr));
+    ret = sendto(sender, endFile, sizeof(endFile), 0, (struct sockaddr *)&addr, sizeof(addr));
     fclose(fp);
 }

@@ -68,4 +68,5 @@ int main(int argc, char *argv[])
                inet_ntoa(sender_addr.sin_addr), ntohs(sender_addr.sin_port), fileName, buf);
         fclose(fptr);
     }
+    close(receiver);
 }

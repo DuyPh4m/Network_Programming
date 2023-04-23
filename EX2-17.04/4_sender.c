@@ -12,8 +12,8 @@ int main(int argc, char *argv[])
     char *ip_address = argv[1];
     int portNumber = atoi(argv[2]);
     char *fileName = argv[3];
-    char endFile[4];
-    strcpy(endFile, "###");
+    // char endFile[4];
+    // strcpy(endFile, "---");
 
     FILE *fptr;
 
