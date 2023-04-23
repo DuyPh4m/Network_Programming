@@ -49,40 +49,15 @@ int main() {
         printf("Client IP: %s:%d\n", inet_ntoa(clientAddr.sin_addr), ntohs(clientAddr.sin_port));
         
         
-        // char *helloFile = argv[2];
-        // FILE *fp1 = fopen(helloFile, "r");
-        // if(fp1 == NULL) {
-        //     perror("fopen() failed!");
-        //     return 1;
-        // }
-        // send
-        // char *msg = fgets(buf, sizeof(buf), fp1);
+        
         char *msg = "Hello";
         int ret = send(client, msg, strlen(msg), 0);
         if(ret == -1) {
             perror("send() failed!");
             continue;
         }
-        // fclose(fp1);
-    
-        //receive
-        // char *logFile = argv[3];
-        // FILE *fp2 = fopen(logFile, "a");
-        
-        // fprintf(fp2, "Messages from Client %s:\n", inet_ntoa(clientAddr.sin_addr));
-        
-        // while(1) {
             char buf[256];
             ret = recv(client, buf, sizeof(buf), 0);
-            // if(ret == -1) {
-                // perror("recv() failed!");
-                // return 1;
-            // } else if(strncmp(buf, "exit", 4) == 0) {
-                // printf("Client %s disconnected!\n", inet_ntoa(clientAddr.sin_addr));
-                // return 1;
-            // }
-            // char *storeFile = argv[3];
-            // FILE *fp2 = fopen(storeFile, "a");
             if(ret < sizeof(buf))
                 buf[ret] = '\0';
             
@@ -107,15 +82,9 @@ int main() {
 
                 printf("%c: %hu\n", diskName, diskSize);
             }
-            // printf("1");
-            // printf("%s", buf);
-            // fprintf(fp2, "%s\n", buf);
-            // printf("%d bytes received and saved!\n", ret);
-            // fclose(fp2);
+
             
-        // }
         close(client);
-        // fclose(fp2);
     }
     close(listener);
 
