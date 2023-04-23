@@ -11,11 +11,15 @@ int main(int argc, char *argv[])
 {
     char *ip_address = argv[1];
     int portNumber = atoi(argv[2]);
-    char *fileName = argv[3];
+    char fileName[30] ;
     char endFile[4];
     strcpy(endFile, "---");
 
     FILE *fp;
+
+    printf("File name: ");
+    scanf("%s", fileName);
+    getchar();
 
     if ((fp = fopen(fileName, "r")) == NULL)
     {
@@ -31,16 +35,16 @@ int main(int argc, char *argv[])
     addr.sin_port = htons(portNumber);
 
     char buf[256];
+    strcat(buf, fileName);
 
-    int ret = sendto(sender, fileName, strlen(fileName), 0, (struct sockaddr *)&addr, sizeof(addr));
+    size_t ret = sendto(sender, buf, strlen(buf), 0,(struct sockaddr *) &addr, sizeof(addr));
 
-    while (fgets(buf, sizeof(buf), fp))
-    {
-        ret = sendto(sender, buf, strlen(buf), 0, (struct sockaddr *)&addr,
-                     sizeof(addr));
+    while(!feof(fp)) {
+        size_t msg = fread (buf, 1, sizeof(buf), fp);
+        if(msg <= 0) 
+            break;
+        ret = sendto(sender, buf, msg, 0, (struct sockaddr *) &addr, sizeof(addr));
     }
-
-    ret = sendto(sender, endFile, strlen(endFile), 0, (struct sockaddr *)&addr, sizeof(addr));
-
+    ret = sendto(sender, endFile, sizeof(endFile), 0, (struct sockaddr *) &addr, sizeof(addr));
     fclose(fp);
 }

@@ -56,7 +56,7 @@ int main() {
     
     while(!feof(fp)) {
         size_t msg = fread(buf, 1, sizeof(buf), fp);
-        if(ret <= 0)
+        if(msg <= 0)
             break;
         send(client, buf, msg, 0);
     }

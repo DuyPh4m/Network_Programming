@@ -39,11 +39,11 @@ int main(int argc, char *argv[])
                        (struct sockaddr *)&sender_addr, &sender_addr_len);
         if (ret < sizeof(buf))
             buf[ret] = 0;
-        printf("%d bytes received %s: %s\n", ret,
+        printf("%d bytes received from %s: %s\n", ret,
                inet_ntoa(sender_addr.sin_addr), buf);
 
         // End of file
-        if (strcmp(buf, "###") == 0)
+        if (strcmp(buf, "---") == 0)
         {
             break;
         }
